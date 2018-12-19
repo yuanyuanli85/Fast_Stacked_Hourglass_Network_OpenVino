@@ -53,7 +53,7 @@ def render_kps(cvmat, kps, scale_x, scale_y):
     for _kp in kps:
         _x, _y, _conf = _kp
         if _conf > 0.2:
-            cv2.circle(cvmat, center=(int(_x*4*scale_x), int(_y*4*scale_y)), color=(255,0,0), radius=3)
+            cv2.circle(cvmat, center=(int(_x*4*scale_x), int(_y*4*scale_y)), color=(255,0,0), radius=5)
 
     return cvmat
 

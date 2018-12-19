@@ -1,11 +1,17 @@
 # Fast_Stacked_Hourglass_Network_OpenVino
-A fast stacked hourglass network for human pose estimation on OpenVino
+A fast stacked hourglass network for human pose estimation on OpenVino. Stacked hourglass network proposed by  [Stacked Hourglass Networks for Human Pose Estimation](https://arxiv.org/abs/1603.06937) is a very good network for single-person pose estimation regarding to speed and accuracy.
+This repo contains a demo to show how to depoly model trained by Keras. It converts a Keras model to IR and shows how to use the generated IR to do inference.
+Have fun with OpenVino!
 
 ## Installation
+- Python3
 - Install OpenVino 2018 R4 or above
 - Install python dependencies
 ```
-pip3 -r install requirements.txt  
+keras==2.1.5
+scipy==1.2.0
+tensorflow==1.12.0
+opencv-python==3.4.3.18
 ```
 
 ## How to convert pre-trained models
@@ -25,5 +31,9 @@ python3 tools/keras_to_tfpb.py --input_model_json ./models/net_arch.json --input
 - Run single image demo on CPU
 ```
 cd src
-python3 stacked_hourglass.py -i ../models/sample.jpg -m ../models/hg_s2_b1_tf.xml -d CPU -l ~/intel/computer_vision_sdk/inference_engine/lib/ubuntu_16.04/intel64/libcpu_extension_avx2.so
+python3 stacked_hourglass.py -i ../models/sample.jpg -m ../models/hg_s2_b1_tf.xml -d CPU -l /path/to/cpu/extension/library
 ```
+
+## Reference 
+- OpenVino: https://github.com/opencv/dldt 
+- Keras implementation for stacked hourglass: https://github.com/yuanyuanli85/Stacked_Hourglass_Network_Keras  

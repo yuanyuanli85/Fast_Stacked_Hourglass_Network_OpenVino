@@ -45,14 +45,10 @@ def main(args):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gpuID", default=0, type=int, help='gpu id')
     parser.add_argument("--input_model_json", required=True, help="model json file")
     parser.add_argument("--input_model_weights", required=True, help="model weight file")
     parser.add_argument("--out_tfpb", required=True, help="place to store converted tf pb")
 
     args = parser.parse_args()
-
-    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-    os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpuID)
 
     main(args)
