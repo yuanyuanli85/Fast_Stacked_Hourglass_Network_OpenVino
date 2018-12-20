@@ -15,23 +15,41 @@ opencv-python==3.4.3.18
 ```
 
 ## How to convert pre-trained models
-- Download pre-trained model hourglass from [Google drive](https://drive.google.com/drive/folders/12ioJONmse658qc9fgMpzSy2D_JCdkFVg?usp=sharing) and save them to `models`. You are going to download two files, one is json file for network configuration while another is weight.
+- Download pre-trained hourglass models from Google drive and save them to `models`. You are going to download two files, one is json file for network configuration while another is weight.
+- [hg_s2_b1_mobile](https://drive.google.com/drive/folders/12ioJONmse658qc9fgMpzSy2D_JCdkFVg?usp=sharing), inputs: 256x256x3, Channel Number: 256
+- [hg_s2_b1_tiny](), inputs:192x128x3, Channel Number: 128
 
-- Convert keras models to tensorflow forzen pb
+- Convert keras models to tensorflow forzen pb  
 ```
-python3 tools/keras_to_tfpb.py --input_model_json ./models/net_arch.json --input_model_weights
-./models/weights_epoch96.h5 --out_tfpb ./models/hg_s2_b1_tf.pb
+python3 tools/keras_to_tfpb.py --input_model_json ./models/path/to/network/json --input_model_weights
+./models/path/to/network/weight/h5 --out_tfpb ./models/hg_s2_b1_tf.pb
 ```
-- Use OpenVino Model Optimizer to convert tf pb to IR. `hg_s2_b1_tf.xml` and `hg_s2_b1_tf.bin` will be generated under current folder.
+- Use OpenVino Model Optimizer to convert tf pb to IR. `.xml` and `.bin` will be generated.
+*  For CPU, please use mobile version and FP32 
 ```
-~/intel/computer_vision_sdk/deployment_tools/model_optimizer/mo_tf.py -w ./models/hg_s2_b1_tf.pb --input_shape=[1,256,256,3]
+~/intel/computer_vision_sdk/deployment_tools/model_optimizer/mo_tf.py -w ./models/hg_s2_b1_tf.pb --input_shape [1,256,256,3] --data_type FP32 --output_dir ./models/ --model_name hg_s2_mobile
+```
+*  For NCS2, please use tiny version and FP16 
+```
+~/intel/computer_vision_sdk/deployment_tools/model_optimizer/mo_tf.py -w ./models/hg_s2_b1_tf.pb --input_shape [1,192,128,3] --data_type FP16 --output_dir ./models/ --model_name hg_s2_tiny
 ```
 
 ## Run demo
 - Run single image demo on CPU
-```
+```sh
 cd src
-python3 stacked_hourglass.py -i ../models/sample.jpg -m ../models/hg_s2_b1_tf.xml -d CPU -l /path/to/cpu/extension/library
+python3 stacked_hourglass.py -i ../models/sample.jpg -m ../models/hg_s2_mobile.xml -d CPU -l /path/to/cpu/extension/library
+```
+- Run single image demo on NCS2(MYRIAD)
+```sh
+cd src
+python3 stacked_hourglass.py -i ../models/sample.jpg -m ../models/hg_s2_tiny.xml -d MYRIAD
+```
+
+- Run Aysnc demo with camera input on CPU
+```sh
+cd src
+python3 stacked_hourglass_camera_async.py -i cam -m ../models/hg_s2_mobile.xml -d CPU -l /path/to/cpu/extension/library
 ```
 
 ## Reference 
