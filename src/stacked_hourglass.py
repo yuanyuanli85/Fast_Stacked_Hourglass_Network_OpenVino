@@ -1,19 +1,6 @@
 #!/usr/bin/env python
-"""
- Copyright (c) 2018 Intel Corporation
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-"""
 from __future__ import print_function
 import sys
 import os
@@ -25,7 +12,6 @@ from time import time
 from openvino.inference_engine import IENetwork, IEPlugin
 import scipy
 from utils_process import post_process_heatmap, render_kps
-
 
 
 def build_argparser():
@@ -85,12 +71,13 @@ def main():
     n, c, h, w = net.inputs[input_blob].shape
     images = np.ndarray(shape=(n, c, h, w))
 
-    image = scipy.misc.imread(args.input[0])
+    image = cv2.imread(args.input[0])
     scale_x = image.shape[1] / w
     scale_y = image.shape[0] / h
     if image.shape[:-1] != (h, w):
         log.warning("Image {} is resized from {} to {}".format(args.input[0], image.shape[:-1], (h, w)))
-        image = scipy.misc.imresize(image, (w, h))
+        image = cv2.resize(image, (w, h))
+        image = image[:, :, ::-1]  # BGR -> RGB
         image = image/255.0
         image = image - np.array([[[0.4404, 0.4440, 0.4327]]]) # Extract mean RGB
 
