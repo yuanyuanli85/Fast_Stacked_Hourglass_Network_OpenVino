@@ -14,7 +14,7 @@ tensorflow==1.12.0
 opencv-python==3.4.3.18
 ```
 
-## How to convert pre-trained models
+## [Keras] Convert pre-trained Keras models
 ### Download pre-trained hourglass models 
 - Download models from Google drive and save them to `models`. You are going to download two files, one is json file for network configuration while another is weight.
 - [hg_s2_b1_mobile](https://drive.google.com/drive/folders/12ioJONmse658qc9fgMpzSy2D_JCdkFVg?usp=sharing), inputs: 256x256x3, Channel Number: 256, pckh 78.86% @MPII.
@@ -38,6 +38,22 @@ python3 tools/keras_to_tfpb.py --input_model_json ./models/path/to/network/json 
 ```
 * `.xml` and `.bin` will be generated.
 
+## [PyTorch] Convert pre-trained Onnx models
+### Download model trained by pytorch 
+Download the `model_best.onnx` model from below table to fit your accuracy and speed requirements  
+
+| Model|in_res |featrues| # of Weights |Head|Shoulder|	Elbow|	Wrist|	Hip	|Knee|	Ankle|	Mean|Link|
+| --- |---| ----|----------- | ----| ----| ---| ---| ---| ---| ---| ---|----|
+| hg_s2_b1|256|128|6.73m| 95.74| 94.51| 87.68| 81.70| 87.81| 80.88 |76.83| 86.58|[GoogleDrive](https://drive.google.com/open?id=1c_YR0NKmRfRvLcNB5wFpm75VOkC9Y1n4)
+| hg_s2_b1_mobile|256|128|2.31m|95.80|  93.61| 85.50| 79.63| 86.13| 77.82| 73.62|  84.69|[GoogleDrive](https://drive.google.com/open?id=1FxTRhiw6_dS8X1jBBUw_bxHX6RoBJaJO)
+| hg_s2_b1_tiny|192|128|2.31m|94.95| 92.87|84.59| 78.19| 84.68| 77.70|  73.07|  83.88|[GoogleDrive](https://drive.google.com/open?id=1qrkaUDPbHwdSBozRbN150O4Mu9HMWIOG)
+
+### Convert onnx to IR 
+Use model optimizer to convert onnx to IR.  FP32 for CPU while FP16 for MYRIAD 
+```
+~/intel/computer_vision_sdk/deployment_tools/model_optimizer/mo.py -w ./models/model_best.onnx --data_type FP32 --output_dir ./models/ --model_name hg_s2_mobile_onnx 
+```
+
 ## Run demo
 - Run single image demo on CPU
 ```sh
@@ -60,3 +76,4 @@ python3 stacked_hourglass_camera_async.py -i cam -m ../models/hg_s2_mobile.xml -
 - OpenVino: https://github.com/opencv/dldt 
 - OpenCV OpenModelZoo: https://github.com/opencv/open_model_zoo 
 - Keras implementation for stacked hourglass: https://github.com/yuanyuanli85/Stacked_Hourglass_Network_Keras  
+- Pytorch-pose: https://github.com/yuanyuanli85/pytorch-pose
