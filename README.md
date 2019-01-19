@@ -40,12 +40,14 @@ python3 tools/keras_to_tfpb.py --input_model_json ./models/path/to/network/json 
 
 ## [PyTorch] Convert pre-trained Onnx models
 ### Download model trained by pytorch 
-Download the `model_best.onnx` model from below table to fit your accuracy and speed requirements  
+Download the `model_best.onnx` model from below table to fit your accuracy and speed requirements.  `hg_s2_b1_mobile_fpd` model trained by using the knowledge distillation proposed by paper [Fast Human Pose Estimation](https://arxiv.org/abs/1811.05419). Details can be found in [Fast_Human_Pose_Estimation_Pytorch](https://github.com/yuanyuanli85/Fast_Human_Pose_Estimation_Pytorch).
+  
 
 | Model|in_res |featrues| # of Weights |Head|Shoulder|	Elbow|	Wrist|	Hip	|Knee|	Ankle|	Mean|Link|
 | --- |---| ----|----------- | ----| ----| ---| ---| ---| ---| ---| ---|----|
 | hg_s2_b1|256|128|6.73m| 95.74| 94.51| 87.68| 81.70| 87.81| 80.88 |76.83| 86.58|[GoogleDrive](https://drive.google.com/open?id=1c_YR0NKmRfRvLcNB5wFpm75VOkC9Y1n4)
 | hg_s2_b1_mobile|256|128|2.31m|95.80|  93.61| 85.50| 79.63| 86.13| 77.82| 73.62|  84.69|[GoogleDrive](https://drive.google.com/open?id=1FxTRhiw6_dS8X1jBBUw_bxHX6RoBJaJO)
+| hg_s2_b1_mobile_fpd|256|128|2.31m| 95.67|94.07| 86.31| 79.68| 86.00| 79.67|75.51| 85.41|[GoogleDrive](https://drive.google.com/open?id=1zFoecNCc7alND8ODh8lg3UeRaB6_gY_V)
 | hg_s2_b1_tiny|192|128|2.31m|94.95| 92.87|84.59| 78.19| 84.68| 77.70|  73.07|  83.88|[GoogleDrive](https://drive.google.com/open?id=1qrkaUDPbHwdSBozRbN150O4Mu9HMWIOG)
 
 ### Convert onnx to IR 
@@ -77,3 +79,4 @@ python3 stacked_hourglass_camera_async.py -i cam -m ../models/hg_s2_mobile.xml -
 - OpenCV OpenModelZoo: https://github.com/opencv/open_model_zoo 
 - Keras implementation for stacked hourglass: https://github.com/yuanyuanli85/Stacked_Hourglass_Network_Keras  
 - Pytorch-pose: https://github.com/yuanyuanli85/pytorch-pose
+- Fast Human Pose Estimation https://github.com/yuanyuanli85/Fast_Human_Pose_Estimation_Pytorch
